@@ -1,0 +1,83 @@
+%macro BuatConsole 3
+call [AllocConsole]
+push dword %1
+call [SetConsoleTitleA]
+push dword -10
+call [GetStdHandle]
+mov dword [%2], eax
+push dword -11
+call [GetStdHandle]
+mov dword [%3], eax
+%endmacro%macro TampilkanTeks 4
+push dword 0
+push dword %4
+push dword [%3]
+push dword %2
+push dword [%1]
+call [WriteFile]
+%endmacro
+%macro BacaTeks 4
+push dword 0
+push dword %4
+push dword [%3]
+push dword %2
+push dword [%1]
+call [ReadFile]
+%endmacro
+%macro TutupConsole 1
+push dword %1*1000
+call [Sleep]
+call [FreeConsole]
+xor eax, eax
+push eax
+call [ExitProcess]
+%endmacro
+%macro JumlahLen 2
+MOV EDI, %1
+MOV CL, 48
+MOV CH, 48
+START:
+MOV AL,[EDI]
+CMP AL,13
+JE FIN
+INC CL
+CMP CL,58
+JE NEXT
+INC EDI
+JMP STARTNEXT:
+SUB CL, 10
+INC CH
+INC EDI
+JMP START
+FIN:
+MOV EDI, %2
+MOV [EDI], CH
+INC EDI
+MOV [EDI], CL
+%endmacro
+%macro JumlahKata 2
+MOV EDI, %1
+DEC EDI
+MOV CL, 49
+MOV CH, 48
+START1:
+INC EDI
+MOV AL,[EDI]
+CMP AL,13
+JE FIN1
+CMP AL, 32
+JNE START1
+INC CL
+CMP CL,59
+JE NEXT1
+JMP START1
+NEXT1:
+SUB CL, 10
+INC CH
+JMP START1
+FIN1:
+MOV EDI, %2
+MOV [EDI], CH
+INC EDI
+MOV [EDI], CL
+%endmacro
