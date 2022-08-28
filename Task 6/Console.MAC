@@ -1,0 +1,34 @@
+%macro BuatConsole 3
+CALL [AllocConsole]
+PUSH dword %1
+CALL [SetConsoleTitleA]
+PUSH dword -10
+CALL [GetStdHandle]
+MOV dword [%2], EAX
+PUSH dword -11
+CALL [GetStdHandle]
+MOV dword [%3],EAX
+%endmacro
+%macro TampilkanTeks 4
+PUSH dword 0
+PUSH dword %4
+PUSH dword [%3]PUSH dword %2
+PUSH dword [%1]
+call[WriteFile]
+%endmacro
+%macro BacaTeks 4
+PUSH dword 0
+PUSH dword %4
+PUSH dword [%3]
+PUSH dword %2
+PUSH dword [%1]
+call[ReadFile]
+%endmacro
+%macro TutupConsole 1
+PUSH dword %1*10
+CALL [Sleep]
+CALL [FreeConsole]
+XOR EAX, EAX
+PUSH EAX
+CALL [ExitProcess]
+%endmacro
